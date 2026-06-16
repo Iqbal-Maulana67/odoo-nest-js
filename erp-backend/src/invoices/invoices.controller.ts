@@ -1,4 +1,15 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import {
   invoicePaymentState,
   invoiceStatusType,
@@ -24,21 +35,31 @@ export class invoicesController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOne(
-    @Param('id')  id: number
-  ){
+  findOne(@Param('id') id: number) {
     return this.invoiceService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createInvoiceDto : createInvoiceDto){
+  create(@Body() createInvoiceDto: createInvoiceDto) {
     return this.invoiceService.create(createInvoiceDto);
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: number, @Body() updateInvoiceDto : updateInvoiceDto){
-    return this.invoiceService.update(id, updateInvoiceDto)
+  update(@Param('id') id: number, @Body() updateInvoiceDto: updateInvoiceDto) {
+    return this.invoiceService.update(id, updateInvoiceDto);
+  }
+
+  @Post(':id/confirm')
+  @HttpCode(HttpStatus.OK)
+  confirm(@Param('id') id: number) {
+    return this.invoiceService.confirm(id);
+  }
+
+  @Post(':id/cancel')
+  @HttpCode(HttpStatus.OK)
+  cancel(@Param('id') id: number) {
+    return this.invoiceService.cancel(id);
   }
 }

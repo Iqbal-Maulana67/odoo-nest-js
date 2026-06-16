@@ -205,4 +205,36 @@ export class invoicesService {
 
     return true;
   }
+
+  async confirm(id: number) {
+    this.logger.log(`Confirming invoice ID ${id}...`);
+    try {
+      await this.odoo.call('account.move', 'action_post', [[id]]);
+
+      return {
+        success: true,
+        message: `Invoice ID ${id} berhasil dikonfirmasi`,
+      };
+    } catch (error: any) {
+      this.logger.error(error.message);
+      throw new BadRequestException(
+        `Gagal konfirmasi invoince ID ${id}: ${error.message}`,
+      );
+    }
+  }
+
+  async cancel(id: number) {
+    try {
+      await this.odoo.call('account.move', 'button_cancel', [[id]]);
+      return { success: true, message: `Invoice ID ${id} berhasil dibatalkan` };
+    } catch (error: any) {
+      if (!error.message?.includes('cannot marshal None')) {
+        this.logger.error(error.message);
+        throw new BadRequestException(
+          `Gagal cancel invoice ID ${id}: ${error.message}`,
+        );
+      }
+      return { success: true, message: `Invoice ID ${id} berhasil dibatalkan` };
+    }
+  }
 }
