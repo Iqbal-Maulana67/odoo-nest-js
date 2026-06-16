@@ -163,8 +163,8 @@ erp-project/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/username/odoo-erp-system.git
-cd odoo-erp-system
+git clone https://github.com/Iqbal-Maulana67/odoo-nest-js.git
+cd odoo-nest-js
 ```
 
 ### 2. Start Odoo with Docker
