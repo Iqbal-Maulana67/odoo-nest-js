@@ -8,6 +8,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { SalesModule } from './sales/sales.module';
 import { CustomersModule } from './customers/customers.module';
 import { invoicesModule } from './invoices/invoices.module';
+import { reportModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { invoicesModule } from './invoices/invoices.module';
     ProductsModule,
     SalesModule,
     CustomersModule,
-    invoicesModule
+    invoicesModule,
+    reportModule
   ],
   providers: [
     // Guard global — semua route terlindungi kecuali yang @Public()
