@@ -1,23 +1,32 @@
 // components/Layout.tsx
-'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useAuthStore } from '@/store/storeAuth';
+"use client";
+import { Suspense, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAuthStore } from "@/store/storeAuth";
 import {
-  LayoutDashboard, Package, ShoppingCart, Users,
-  FileText, BarChart2, Settings, LogOut, Menu, X,
-  Building2
-} from 'lucide-react';
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  FileText,
+  BarChart2,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+  Building2,
+} from "lucide-react";
+import Loading from "@/app/loading";
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/products', label: 'Produk', icon: Package },
-  { href: '/sales', label: 'Penjualan', icon: ShoppingCart },
-  { href: '/customers', label: 'Pelanggan', icon: Users },
-  { href: '/invoices', label: 'Invoice', icon: FileText },
-  { href: '/reports', label: 'Laporan', icon: BarChart2 },
-  { href: '/settings', label: 'Pengaturan', icon: Settings },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/products", label: "Produk", icon: Package },
+  { href: "/sales", label: "Penjualan", icon: ShoppingCart },
+  { href: "/customers", label: "Pelanggan", icon: Users },
+  { href: "/invoices", label: "Invoice", icon: FileText },
+  { href: "/reports", label: "Laporan", icon: BarChart2 },
+  { href: "/settings", label: "Pengaturan", icon: Settings },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -28,12 +37,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-screen bg-gray-50 font-sans">
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-slate-900 text-white flex flex-col`}>
+      <aside
+        className={`${sidebarOpen ? "w-64" : "w-16"} transition-all duration-300 bg-slate-900 text-white flex flex-col`}
+      >
         {/* Logo */}
         <div className="h-16 flex items-center px-4 border-b border-slate-700">
           <Building2 className="text-blue-400 shrink-0" size={24} />
           {sidebarOpen && (
-            <span className="ml-3 font-bold text-lg tracking-tight">OdooERP</span>
+            <span className="ml-3 font-bold text-lg tracking-tight">
+              OdooERP
+            </span>
           )}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -53,12 +66,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href={href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
                   active
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800"
                 }`}
               >
                 <Icon size={20} className="shrink-0" />
-                {sidebarOpen && <span className="text-sm font-medium">{label}</span>}
+                {sidebarOpen && (
+                  <span className="text-sm font-medium">{label}</span>
+                )}
               </Link>
             );
           })}
@@ -87,11 +102,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {/* Topbar */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center px-6">
           <h1 className="text-lg font-semibold text-gray-800 capitalize">
-            {pathname.split('/')[1] || 'Dashboard'}
+            {pathname.split("/")[1] || "Dashboard"}
           </h1>
           <div className="ml-auto flex items-center gap-3">
             <span className="text-sm text-gray-500">
-              {new Date().toLocaleDateString('id-ID', { dateStyle: 'long' })}
+              {new Date().toLocaleDateString("id-ID", { dateStyle: "long" })}
             </span>
           </div>
         </header>
