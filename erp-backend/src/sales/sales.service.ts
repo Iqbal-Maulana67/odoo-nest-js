@@ -9,7 +9,7 @@ export class SalesService {
 
   constructor(private readonly odoo: OdooService) {}
 
-  async findAll(limit = 20, offset = 0, state = '') {
+  async findAll(limit = 20, offset = 0, state = '', sortDate : string) {
     const domain: any[] = [];
 
     // Filter by state jika ada
@@ -29,7 +29,7 @@ export class SalesService {
       ],
       limit,
       offset,
-      order: 'date_order desc',
+      order: 'date_order ' + sortDate,
     });
   }
 

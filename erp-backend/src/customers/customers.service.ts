@@ -78,7 +78,8 @@ export class CustomerService {
   }
 
   async create(dto: createCustomerDto) {
-    this.logger.log('Added Customer Data: ', dto.name);
+    await this.odoo.call('res.partner', 'create', [dto])
+    this.logger.log('Added Customer Data: ', dto);
   }
 
   async update(id: number, dto: updateCustomerDto) {

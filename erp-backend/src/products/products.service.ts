@@ -1,6 +1,8 @@
 // src/products/products.service.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { OdooService } from '../odoo/odoo.service';
+import { createProductDto } from './dto/create-product.dto';
+import { updateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -39,30 +41,16 @@ export class ProductsService {
     return result[0];
   }
 
-  async create(data: {
-    name: string;
-    list_price: number;
-    default_code?: string;
-    qty_available: number;
-    type: string;
-  }) {
-    this.logger.log(`Created data with data:`, data);
-    const productId = await this.odoo.call('product.product', 'create', [
-      {
-        name: data.name,
-        list_price: data.list_price,
-        qty_available: data.qty_available,
-        default_code: data.default_code,
-        type: data.type,
-      },
-    ]);
+  async create(dto: createProductDto) {
+    this.logger.log(`Created data with data:`, dto);
+    const productId = await this.odoo.call('product.product', 'create', [dto]);
 
-    if (data.qty_available && data.qty_available > 0) {
+    if (dto.qty_available && dto.qty_available > 0) {
       await this.odoo.call('stock.quant', 'create', [
         {
           product_id: productId,
           location_id: 8,
-          quantity: data.qty_available,
+          quantity: dto.qty_available,
         },
       ]);
     }
@@ -70,22 +58,14 @@ export class ProductsService {
     return { id: productId, success: true };
   }
 
-  async update(id: number, data: any) {
-    this.logger.log(`Update data with data:`, data);
-    await this.odoo.call('product.product', 'write', [
-      [id],
-      {
-        name: data.name,
-        list_price: data.list_price,
-        default_code: data.default_code,
-        type: data.type,
-      },
-    ]);
+  async update(id: number, dto: updateProductDto) {
+    this.logger.log(`Update data with data:`, dto);
+    await this.odoo.call('product.product', 'write', [[id], dto]);
 
     if (
-      data.qty_available !== undefined &&
-      data.qty_available >= 0 &&
-      data.type == 'product'
+      dto.qty_available !== undefined &&
+      dto.qty_available >= 0 &&
+      dto.type == 'product'
     ) {
       const quants = await this.odoo.call(
         'stock.quant',
@@ -103,18 +83,16 @@ export class ProductsService {
       );
 
       if (quants.length > 0) {
-        // Update stock.quant yang sudah ada
         await this.odoo.call('stock.quant', 'write', [
           [quants[0].id], // ← ID record stock.quant
-          { quantity: data.qty_available },
+          { quantity: dto.qty_available },
         ]);
       } else {
-        // Belum ada record stok, buat baru
         await this.odoo.call('stock.quant', 'create', [
           {
             product_id: id,
             location_id: 8,
-            quantity: data.qty_available,
+            quantity: dto.qty_available,
           },
         ]);
       }

@@ -28,8 +28,8 @@ export class SalesController {
   }
 
   @Get()
-  findAll(@Query('limit') limit : number = 20, @Query('offset') offset : number = 0, @Query('search') search : string = '') {
-    return this.salesService.findAll(limit, offset, search);
+  findAll(@Query('limit') limit : number = 20, @Query('offset') offset : number = 0, @Query('search') search : string = '', @Query('sortDate') sortDate : string) {
+    return this.salesService.findAll(limit, offset, search, sortDate);
   }
 
   @Get('summary')
