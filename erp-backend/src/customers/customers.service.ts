@@ -78,7 +78,7 @@ export class CustomerService {
   }
 
   async create(dto: createCustomerDto) {
-    await this.odoo.call('res.partner', 'create', [dto])
+    await this.odoo.call('res.partner', 'create', [dto]);
     this.logger.log('Added Customer Data: ', dto);
   }
 

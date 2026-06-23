@@ -28,7 +28,7 @@ export class SalesController {
   }
 
   @Get()
-  findAll(@Query('limit') limit : number = 20, @Query('offset') offset : number = 0, @Query('search') search : string = '', @Query('sortDate') sortDate : string) {
+  findAll(@Query('limit') limit : number = 20, @Query('offset') offset : number = 0, @Query('search') search : string = '', @Query('sortDate') sortDate : string = 'desc') {
     return this.salesService.findAll(limit, offset, search, sortDate);
   }
 
